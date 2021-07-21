@@ -1,0 +1,59 @@
+﻿@page "/"
+@using System.Net.Http
+@inject HttpClient Http
+
+
+<center>
+
+    <h1>C# Deck Coding Challenge</h1>
+    <p>Cards in Deck: @cards_in_deck</p>
+    <p>Cards in Hand: @cards_in_hand</p>
+
+    <button @onclick="newGame">load new deck</button>
+    <button @onclick="drawOne">draw a card</button>
+    <button @onclick="shuffle">shuffle deck</button>
+
+    <p>Hand</p>
+    <ul style="width:200px;">
+        @foreach (Card card in hand)
+        {
+            <li>
+                @card.getValue() of @card.getSuite()
+            </li>
+        }
+    </ul>
+
+</center>
+
+
+@code{
+
+    public GameInstance gameInstance = new GameInstance();
+    public int cards_in_deck = 0;
+    public int cards_in_hand = 0;
+    public List<Card> hand = new List<Card>();
+
+    void newGame()
+    {
+        gameInstance.newGame();
+        setStats();        //cards_in_deck = 5;
+    }
+    void drawOne()
+    {
+        gameInstance.draw();
+        setStats();
+    }
+    void setStats()
+    {
+        cards_in_deck = gameInstance.deck.cards.Count;
+        cards_in_hand = gameInstance.hand.Count;
+        hand = gameInstance.hand;
+    }
+    void shuffle()
+    {
+        gameInstance.deck.shuffle();
+    }
+
+
+}
+
